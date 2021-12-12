@@ -119,6 +119,10 @@ content .left li {
 }
 content .left li:hover{
 	background: #f3f3f3;
+	cursor: pointer;
+}
+content .left li.active {
+	background: #f3f3f3;
 }
 content .left li:hover .info{
 	color: #ff0000;
