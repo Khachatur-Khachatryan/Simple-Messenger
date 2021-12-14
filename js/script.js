@@ -89,6 +89,9 @@ let messages = [
 	{ id: 12, userId: 4, chatId: 3, text: chats[2].lastMessage},
 ];
 
+let chatList = document.getElementById("chats");
+let messageList = document.getElementById("messages");
+
 function showChats(userId) {
 	let arr = [];
 	chats.forEach(chat => arr[chat.id] = chat);
@@ -99,10 +102,12 @@ function showChats(userId) {
 	
 	let user_chats = userChats.filter(x => x.userId == userId);
 
+	let chatTemplate = '';
+
 	for(var userChat of user_chats) {
 
 		if(localStorage.getItem("activeChatId") == userChat.chatId) {
-			let template = '<li class="active">' +
+			chatTemplate = '<li class="active">' +
 									'<div class="image">' +
 										'<img src="image/avatar2.png" width="53">' +
 									'</div>' +
@@ -112,13 +117,12 @@ function showChats(userId) {
 									'</div>' +
 								'</li>';
 
-			var chatList = document.getElementById("chats");
-			chatList.innerHTML += template;
+			chatList.innerHTML += chatTemplate;
 
 			continue;
 		}
 
-		let template = '<li>' +
+		chatTemplate = '<li>' +
 								'<div class="image">' +
 									'<img src="image/avatar2.png" width="53">' +
 								'</div>' +
@@ -127,11 +131,52 @@ function showChats(userId) {
 									'<p class="last-message">' + userChat.chat.lastMessage + '</p>' +
 								'</div>' +
 							'</li>';
-		var chatList = document.getElementById("chats");
-		chatList.innerHTML += template;
+
+		chatList.innerHTML += chatTemplate;
+	}
+}
+
+function showChatMessages(chatId) {
+	let chatMessages = messages.filter(x => x.chatId == chatId);
+
+	let messageTemplate = '';
+
+	for(let message in chatMessages) {
+
+		if(localStorage.getItem("userId") == message.userId) {
+			messageTemplate = '<li class="self">' +
+										'<div class="message-wrapper">' +
+											'<div class="image">' +
+												'<img src="image/avatar1.png" width="50">' +
+											'</div>' +
+											'<div class="message-conatiner">' +
+												'<div class="message">' + message.text + '</div>' +
+											'</div>'+ 
+										'</div>' +
+									'</li>';
+
+			messageList.innerHTML += messageTemplate;
+		}
+
+		messageTemplate = '<li class="other">' +
+									'<div class="message-wrapper">' +
+										'<div class="image">' +
+											'<img src="image/avatar2.png" width="50">' +
+										'</div>' +
+										'<div class="message-conatiner">' +
+											'<div class="message">' +
+												message.text +
+											'</div>' +
+										'</div>'+ 
+									'</div>' +
+								'</li>';
+
+		messageList.innerHTML += messageTemplate;
 	}
 }
 
 window.onload = function() {
 	showChats(localStorage.getItem("userId"));
+	showChatMessages(localStorage.getItem("activeChatId"));
 };
+
