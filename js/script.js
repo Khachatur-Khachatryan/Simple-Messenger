@@ -43,7 +43,7 @@ let userChats = [
 	{
 		id: 1,
 		userId: 1,
-		chatId: 1,
+		chatId: 1
 	},
 	{
 		id: 2,
@@ -91,6 +91,13 @@ let messages = [
 
 let chatList = document.getElementById("chats");
 let messageList = document.getElementById("messages");
+let messageInput = document.getElementById("messageInput");
+messageInput.addEventListener("keyup", function(e) {
+	if(e.keyCode == 13) {
+		sendMessage(messageInput.value);
+		messageInput.value = '';
+	}
+});
 
 function showChats(userId) {
 	let arr = [];
@@ -100,20 +107,20 @@ function showChats(userId) {
 	    userChat.chat = arr[userChat.chatId];
 	});
 	
-	let user_chats = userChats.filter(x => x.userId == userId);
+	let user_chats = userChats.filter(x => x.userId == userId).sort((x, y) => (x.chatId > y.chatId) ? 1 : -1);
 
 	let chatTemplate = '';
 
-	for(var userChat of user_chats) {
+	for(let i = 0; i < user_chats.length; i++) {
 
-		if(localStorage.getItem("activeChatId") == userChat.chatId) {
-			chatTemplate = '<li class="active">' +
+		if(localStorage.getItem("activeChatId") == user_chats[i].chatId) {
+			chatTemplate = '<li class="active" onclick="changeChat('+ ( i + 1 )+')">' +
 									'<div class="image">' +
 										'<img src="image/avatar2.png" width="53">' +
 									'</div>' +
 									'<div class="info">' +
-										'<label class="title">' + userChat.chat.title + '</label>' +
-										'<p class="last-message">' + userChat.chat.lastMessage + '</p>' +
+										'<label class="title">' + user_chats[i].chat.title + '</label>' +
+										'<p class="last-message">' + user_chats[i].chat.lastMessage + '</p>' +
 									'</div>' +
 								'</li>';
 
@@ -122,13 +129,13 @@ function showChats(userId) {
 			continue;
 		}
 
-		chatTemplate = '<li>' +
+		chatTemplate = '<li onclick="changeChat(' + (i + 1) +')">' +
 								'<div class="image">' +
 									'<img src="image/avatar2.png" width="53">' +
 								'</div>' +
 								'<div class="info">' +
-									'<label class="title">' + userChat.chat.title + '</label>' +
-									'<p class="last-message">' + userChat.chat.lastMessage + '</p>' +
+									'<label class="title">' + user_chats[i].chat.title + '</label>' +
+									'<p class="last-message">' + user_chats[i].chat.lastMessage + '</p>' +
 								'</div>' +
 							'</li>';
 
@@ -141,7 +148,7 @@ function showChatMessages(chatId) {
 
 	let messageTemplate = '';
 
-	for(let message in chatMessages) {
+	for(let message of chatMessages) {
 
 		if(localStorage.getItem("userId") == message.userId) {
 			messageTemplate = '<li class="self">' +
@@ -175,8 +182,50 @@ function showChatMessages(chatId) {
 	}
 }
 
+function changeChat(chatId) {
+
+	if(localStorage.getItem("activeChatId") == chatId) {
+		return;
+	}
+	
+	localStorage.setItem("activeChatId", chatId);
+
+	chatList.innerHTML = '';
+	messageList.innerHTML = '';
+	
+	showChatMessages(localStorage.getItem("activeChatId"));
+	showChats(localStorage.getItem("userId"));
+}
+
+function sendMessage(text) {
+	let userId = parseInt(localStorage.getItem("userId"));
+	let activeChatId = parseInt(localStorage.getItem("activeChatId"));
+
+	let newMessage = {
+		id: messages.indexOf(messages.length - 1),
+		userId: userId,
+		chatId: activeChatId,
+		text: text
+	};
+
+	chats[activeChatId].lastMessage = text;
+
+	messages.push(newMessage);
+	messageList.innerHTML += '<li class="self">' +
+										'<div class="message-wrapper">' +
+											'<div class="image">' +
+												'<img src="image/avatar1.png" width="50">' +
+											'</div>' +
+											'<div class="message-conatiner">' +
+												'<div class="message">' + newMessage.text + '</div>' +
+											'</div>'+ 
+										'</div>' +
+									'</li>';
+}
+
 window.onload = function() {
 	showChats(localStorage.getItem("userId"));
 	showChatMessages(localStorage.getItem("activeChatId"));
 };
+
 

@@ -6,6 +6,7 @@
 		<script src="https://kit.fontawesome.com/1b9a6208f0.js" crossorigin="anonymous"></script>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	</head>
 	<body>
 		
@@ -34,6 +35,7 @@
 		<content class="main">
 			<section class="left">
 				<ul class="chats" id="chats">
+					
 				</ul>
 			</section>
 			<section class="center section-wrapper">
@@ -46,10 +48,7 @@
 					</ul>
 				</content>
 				<div class="chat-footer">
-					<input type="text" class="message-input" placeholder="Write mesage...">
-					<div class="send-message">
-						<button class="send-message-button"><i class="far fa-envelope"></i></button>
-					</div>
+					<input id="messageInput" type="text" class="message-input" placeholder="Write mesage...">
 				</div>
 			</section>
 		</content>

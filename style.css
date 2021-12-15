@@ -262,26 +262,11 @@ content .center content {
 	border: none;
 	color: #fff;
 	float: left;
-	width: 85%;
+	width: 100%;
 	padding: 0 10px;
 	font-size: 16px;
 }
 .message-input:focus {
    outline: 0;
    border: none;
-}
-.send-message-button {
-	border-radius: 50%;
-	border: none;
-	width: 30px;
-	height: 30px;
-	margin-top: -5px;
-	font-size: 15px;
-}
-.send-message-button:hover {
-	background: #d9d9d9;
-}
-.send-message {
-  	float: right;
-   display: inline-block;
 }
