@@ -118,11 +118,11 @@ content .left li {
 	border: 2px solid #666681;
 }
 content .left li:hover{
-	background: #f3f3f3;
+	background: #665dfe;
 	cursor: pointer;
 }
 content .left li.active {
-	background: #f3f3f3;
+	background: #665dfe;
 }
 content .left li:hover .info{
 	color: #ff0000;
@@ -148,9 +148,9 @@ content .left .title {
 	font-weight: 700;
 	color: #c5bbbb;
 }
-content .left .last-message {
+.last-message {
 	font-size: 14px;
-	color: #929292;
+	color: #e3e3e3;
 	margin-left: 7px;
 	display: inline;
 }

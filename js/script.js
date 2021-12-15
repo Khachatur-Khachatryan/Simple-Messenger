@@ -4,19 +4,23 @@ localStorage.setItem("userId", 1);
 let users = [
 	{
 		id: 1,
-		displayName: "Petro Kolosov"
+		displayName: "Petro Kolosov",
+		avatar: "image/avatar1.png"
 	},
 	{
 		id: 2,
-		displayName: "Szymon Murawski"
+		displayName: "Szymon Murawski",
+		avatar: "image/avatar2.png"
 	},
 	{
 		id: 3,
-		displayName: "Illia Zubachov"
+		displayName: "Illia Zubachov",
+		avatar: "image/avatar3.png"
 	},
 	{
 		id: 4,
-		displayName: "Bob Smith"
+		displayName: "Bob Smith",
+		avatar: "image/avatar4.png"
 	},
 ];
 
@@ -43,31 +47,37 @@ let userChats = [
 	{
 		id: 1,
 		userId: 1,
+		partnerId: 2,
 		chatId: 1
 	},
 	{
 		id: 2,
 		userId: 2,
+		partnerId: 1,
 		chatId: 1
 	},
-	{
+	{  
 		id: 3,
 		userId: 1,
+		partnerId: 3,
 		chatId: 2
 	},
 	{
 		id: 4,
 		userId: 3,
+		partnerId: 1,
 		chatId: 2
 	},
 	{
 		id: 5,
 		userId: 1,
+		partnerId: 4,
 		chatId: 3
 	},
 	{
 		id: 6,
 		userId: 4,
+		partnerId: 1,
 		chatId: 3
 	}
 ];
@@ -92,31 +102,42 @@ let messages = [
 let chatList = document.getElementById("chats");
 let messageList = document.getElementById("messages");
 let messageInput = document.getElementById("messageInput");
+let chatTitle = document.getElementById("chatTitle");
+
 messageInput.addEventListener("keyup", function(e) {
 	if(e.keyCode == 13) {
+		if(messageInput.value == '') {
+			return;
+		}
+
 		sendMessage(messageInput.value);
 		messageInput.value = '';
+		showChats(localStorage.getItem("userId"));
 	}
 });
 
 function showChats(userId) {
+
 	let arr = [];
-	chats.forEach(chat => arr[chat.id] = chat);
+	chats.forEach(chat => arr[chat.id-1] = chat);
 	
-	userChats.forEach(function(userChat) {
-	    userChat.chat = arr[userChat.chatId];
-	});
+	userChats.forEach(userChat => userChat.chat = arr[userChat.chatId-1]);
+
+	arr = [];
+	users.forEach(partner => arr[partner.id] = partner);
 	
+	userChats.forEach(userChat => userChat.partner = arr[userChat.partnerId]);
+
 	let user_chats = userChats.filter(x => x.userId == userId).sort((x, y) => (x.chatId > y.chatId) ? 1 : -1);
 
 	let chatTemplate = '';
 
 	for(let i = 0; i < user_chats.length; i++) {
-
 		if(localStorage.getItem("activeChatId") == user_chats[i].chatId) {
+
 			chatTemplate = '<li class="active" onclick="changeChat('+ ( i + 1 )+')">' +
 									'<div class="image">' +
-										'<img src="image/avatar2.png" width="53">' +
+										'<img src="'+ user_chats[i].partner.avatar +'" width="53">' +
 									'</div>' +
 									'<div class="info">' +
 										'<label class="title">' + user_chats[i].chat.title + '</label>' +
@@ -125,13 +146,13 @@ function showChats(userId) {
 								'</li>';
 
 			chatList.innerHTML += chatTemplate;
-
+			chatTitle.innerHTML = user_chats[i].chat.title;
 			continue;
 		}
 
 		chatTemplate = '<li onclick="changeChat(' + (i + 1) +')">' +
 								'<div class="image">' +
-									'<img src="image/avatar2.png" width="53">' +
+									'<img src="'+ user_chats[i].partner.avatar +'" width="53">' +
 								'</div>' +
 								'<div class="info">' +
 									'<label class="title">' + user_chats[i].chat.title + '</label>' +
@@ -144,7 +165,13 @@ function showChats(userId) {
 }
 
 function showChatMessages(chatId) {
-	let chatMessages = messages.filter(x => x.chatId == chatId);
+
+	let arr = [];
+	users.forEach(user => arr[user.id-1] = user);
+	
+	messages.forEach(message => message.user = arr[message.userId-1]);
+
+	let chatMessages = messages.filter( x => x.chatId == chatId );
 
 	let messageTemplate = '';
 
@@ -154,7 +181,7 @@ function showChatMessages(chatId) {
 			messageTemplate = '<li class="self">' +
 										'<div class="message-wrapper">' +
 											'<div class="image">' +
-												'<img src="image/avatar1.png" width="50">' +
+												'<img src="' + message.user.avatar + '" width="50">' +
 											'</div>' +
 											'<div class="message-conatiner">' +
 												'<div class="message">' + message.text + '</div>' +
@@ -163,12 +190,14 @@ function showChatMessages(chatId) {
 									'</li>';
 
 			messageList.innerHTML += messageTemplate;
+
+			continue;
 		}
 
 		messageTemplate = '<li class="other">' +
 									'<div class="message-wrapper">' +
 										'<div class="image">' +
-											'<img src="image/avatar2.png" width="50">' +
+											'<img src="' + message.user.avatar + '" width="50">' +
 										'</div>' +
 										'<div class="message-conatiner">' +
 											'<div class="message">' +
@@ -192,7 +221,8 @@ function changeChat(chatId) {
 
 	chatList.innerHTML = '';
 	messageList.innerHTML = '';
-	
+	messageInput.value = '';
+
 	showChatMessages(localStorage.getItem("activeChatId"));
 	showChats(localStorage.getItem("userId"));
 }
@@ -202,14 +232,15 @@ function sendMessage(text) {
 	let activeChatId = parseInt(localStorage.getItem("activeChatId"));
 
 	let newMessage = {
-		id: messages.indexOf(messages.length - 1),
+		id: messages.length+1,
 		userId: userId,
 		chatId: activeChatId,
 		text: text
 	};
 
-	chats[activeChatId].lastMessage = text;
+	chats[activeChatId-1].lastMessage = text;
 
+	let a = chats[activeChatId-1];
 	messages.push(newMessage);
 	messageList.innerHTML += '<li class="self">' +
 										'<div class="message-wrapper">' +
@@ -221,8 +252,8 @@ function sendMessage(text) {
 											'</div>'+ 
 										'</div>' +
 									'</li>';
+	chatList.innerHTML = '';
 }
-
 window.onload = function() {
 	showChats(localStorage.getItem("userId"));
 	showChatMessages(localStorage.getItem("activeChatId"));
