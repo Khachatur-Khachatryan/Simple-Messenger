@@ -152,7 +152,12 @@ content .left .title {
 	font-size: 14px;
 	color: #e3e3e3;
 	margin-left: 7px;
-	display: inline;
+	display: inline-block;
+	max-width: 20ch;
+	overflow: hidden;
+	text-overflow: ellipsis;
+   white-space: nowrap
+
 }
 content .center {
 	width: 55%;
@@ -190,10 +195,12 @@ content .center content {
 	margin-bottom: 15px;
 }
 .chat-messages {
-	flex: 1 0 auto;
 	height: 100%;
 	overflow-y: auto;
    overflow-x: hidden;
+   display: flex;
+   flex-direction: column;
+   padding-bottom: 0px;
 }
 .messages li {
 	width: 100%;
@@ -242,15 +249,15 @@ content .center content {
 	float: right;
 }
 .section-wrapper {
-	display: flex;
-  	flex-direction: column;
+	/*display: flex;
+  	flex-direction: column;*/
   	height: 100%;
 }
 .chat-footer {
 	padding: 10px;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
-	position: relative;
+	
 	background-color: #696969;
 }
 
@@ -263,8 +270,11 @@ content .center content {
 	color: #fff;
 	float: left;
 	width: 100%;
-	padding: 0 10px;
+	padding: 10px;
 	font-size: 16px;
+	border-radius: 10px;
+   bottom: 0;
+   margin-top: auto;
 }
 .message-input:focus {
    outline: 0;
