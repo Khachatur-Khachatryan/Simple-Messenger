@@ -1,6 +1,7 @@
 localStorage.setItem("activeChatId", 1);
 localStorage.setItem("userId", 1);
 
+// Seeds
 let users = [
 	{
 		id: 1,
@@ -98,12 +99,21 @@ let messages = [
 	{ id: 12, userId: 4, chatId: 3, text: chats[2].lastMessage},
 ];
 
+// HTML elements
+
 let chatList = document.getElementById("chats");
 let messageList = document.getElementById("messages");
 let messageInput = document.getElementById("messageInput");
 let searchInput = document.getElementById("searchInput");
 let searchButton = document.getElementById("searchButton");
 let chatTitle = document.getElementById("chatTitle");
+
+// Binds
+
+window.onload = function() {
+	showChats(localStorage.getItem("userId"));
+	showChatMessages(localStorage.getItem("activeChatId"));
+};
 
 searchButton.addEventListener("click", function() {
 	searchMessage(localStorage.getItem("activeChatId"), searchInput.value);
@@ -130,6 +140,8 @@ messageInput.addEventListener("keyup", function(e) {
 		showChats(localStorage.getItem("userId"));
 	}
 });
+
+// Functions
 
 function showChats(userId) {
 
@@ -189,7 +201,6 @@ function showChatMessages(chatId) {
 	let chatMessages = messages.filter(x => x.chatId == chatId);
 
 	printMessages(chatMessages);
-	
 }
 
 function changeChat(chatId) {
@@ -286,10 +297,3 @@ function printMessages(chatMessages) {
 		messageList.innerHTML += messageTemplate;
 	}
 }
-
-window.onload = function() {
-	showChats(localStorage.getItem("userId"));
-	showChatMessages(localStorage.getItem("activeChatId"));
-};
-
-
