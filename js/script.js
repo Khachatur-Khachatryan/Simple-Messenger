@@ -28,18 +28,17 @@ let chats = [
 	{
 		id: 1,
 		title: users[1].displayName,
-		lastMessage: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima corrupti dignissimos dolores ipsa" +
-			" nihil temporibus voluptates."
+		lastMessage: "Augue luctus in aenean consectetur lorem non molestie consectetur dictum."
 	},
 	{
 		id: 2,
 		title: users[2].displayName,
-		lastMessage: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima corrupti dignissimos dolores."
+		lastMessage: "Faucibus. Morbi accumsan non efficitur faucibus. In cursus urna ornar."
 	},
 	{
 		id: 3,
 		title: users[3].displayName,
-		lastMessage: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima."
+		lastMessage: "Libero, sodales integer dui hac in velit aenean nec interdu."
 	}
 ];
 
@@ -83,19 +82,19 @@ let userChats = [
 ];
 
 let messages = [
-	{ id: 1, userId: 1, chatId: 1, text: "Lorem ipsum." },
-	{ id: 2, userId: 2, chatId: 1, text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, reiciendis." },
-	{ id: 3, userId: 1, chatId: 1, text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate." },
+	{ id: 1, userId: 1, chatId: 1, text: "Arcu sit est. Et amet venenatis sit mollis hac quam, in aenea." },
+	{ id: 2, userId: 2, chatId: 1, text: "Venenatis amet, et. Augue et lorem in sit arcu augue cursus sodale." },
+	{ id: 3, userId: 1, chatId: 1, text: "In cras quis, dui ut. Molestie molestie quam, sed elit. In et id lacinia est." },
 	{ id: 4, userId: 1, chatId: 1, text: chats[0].lastMessage },
 
-	{ id: 5, userId: 1, chatId: 2, text: "Lorem ipsum." },
-	{ id: 6, userId: 3, chatId: 2, text: "Lorem ipsum dolor sit amet, consectetur adipisicing." },
-	{ id: 7, userId: 3, chatId: 2, text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit." },
+	{ id: 5, userId: 1, chatId: 2, text: "Et sed dictum est. Sed nisi luctus quam, sit elit. Ultricies. Habitasse libero, efficitu." },
+	{ id: 6, userId: 3, chatId: 2, text: "Id sit augue sit ipsum sapien sed dictumst. Id arcu libero, accumsan dapibus ve." },
+	{ id: 7, userId: 3, chatId: 2, text: "Faucibus. Mattis dictum. Mattis risus mattis vita." },
 	{ id: 8, userId: 1, chatId: 2, text: chats[1].lastMessage},
 
-	{ id: 9, userId: 1, chatId: 3, text: "Lorem ipsum." },
-	{ id: 10, userId: 1, chatId: 3, text: "Lorem ipsum dolor sit amet, consectetur." },
-	{ id: 11, userId: 4, chatId: 3, text: "Lorem ipsum dolor sit amet." },
+	{ id: 9, userId: 1, chatId: 3, text: "Orci, dictumst. Interdum mattis sit et. I." },
+	{ id: 10, userId: 1, chatId: 3, text: "Sodales nec odio. Quam, luctus nisi eget pellentesque lectus orci, dictum." },
+	{ id: 11, userId: 4, chatId: 3, text: "Pulvinar sapien odio." },
 	{ id: 12, userId: 4, chatId: 3, text: chats[2].lastMessage},
 ];
 
@@ -122,6 +121,7 @@ searchInput.addEventListener("keyup", function(e) {
 messageInput.addEventListener("keyup", function(e) {
 	if(e.keyCode == 13) {
 		if(messageInput.value == '') {
+			alert("Message is empty")
 			return;
 		}
 
